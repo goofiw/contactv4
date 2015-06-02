@@ -10,11 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140321144528) do
+ActiveRecord::Schema.define(version: 20150602182307) do
 
-  create_table "users", force: true do |t|
-    t.string "name"
+  create_table "contacts", force: true do |t|
+    t.string "first_name"
+    t.string "last_name"
     t.string "email"
   end
+
+  create_table "numbers", force: true do |t|
+    t.string  "number"
+    t.string  "type"
+    t.integer "contacts_id"
+  end
+
+  add_index "numbers", ["contacts_id"], name: "index_numbers_on_contacts_id"
 
 end
