@@ -9,12 +9,12 @@ $(document).ready(function() {
 	  for(var i = 0; i < contacts.length; i++) {
 	    full_contact.append($('<p>').addClass("contact").text("Name:  " + contacts[i].first_name + " " + contacts[i].last_name + "\nEmail:  " + contacts[i].email));
 	    for(var n = 0; n < contacts[i].numbers.length; n++){
-	    	num = $('<p>').text(contacts[i].numbers.type + ":  " + contacts[i].numbers.number + '\n');
+	    	num = $('<p>').text(contacts[i].numbers.type + ":  " + contacts[i].numbers[n] + '\n');
 	    	full_contact.append(num);
 	    }
-	    del = $('<button>').attr('id', 'delete-' + contacts[i].id).text("delete");    
-	    edit = $('<button>').attr('id', 'edit-' + contacts[i].id).text("edit");
-	    add_num = $('<button>').attr('id', 'add-' + contacts[i].id).text("add number");
+	    del = $('<button>').addClass("delete").attr('data-id', contacts[i].id).text("delete");    
+	    edit = $('<button>').addClass("edit").attr('data-id', contacts[i].id).text("edit");
+	    add_num = $('<button>').addClass("add-num").attr('data-id', contacts[i].id).text("add number");
 	    full_contact.append(del);
 	    full_contact.append(edit);
 	    full_contact.append(add_num);
@@ -24,6 +24,13 @@ $(document).ready(function() {
 	  $(div).appendTo("#container");
 	}
 
+
+  $('#container').on('click', '.delete', function(){
+  	console.log("WTF");
+    console.log($(this).data('id'));
+
+    //add ajax to delete a contact
+  });
 	// display_contacts();
 
 	$('#search').submit(function(event) {
