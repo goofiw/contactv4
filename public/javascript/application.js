@@ -12,7 +12,7 @@ $(document).ready(function() {
 	    	num = $('<p>').text(contacts[i].numbers.type + ":  " + contacts[i].numbers[n] + '\n');
 	    	full_contact.append(num);
 	    }
-	    del = $('<button>').addClass("delete").attr('data-id', contacts[i].id).text("delete");    
+	    del = $('<button>').addClass("delete").data('id', contacts[i].id).text("delete");    
 	    edit = $('<button>').addClass("edit").attr('data-id', contacts[i].id).text("edit");
 	    add_num = $('<button>').addClass("add-num").attr('data-id', contacts[i].id).text("add number");
 	    full_contact.append(del);
@@ -29,7 +29,16 @@ $(document).ready(function() {
   	console.log("WTF");
     console.log($(this).data('id'));
 
-    //add ajax to delete a contact
+    $.ajax({
+    	url: 'contacts/' + $(this).data('id'),
+    	type: 'DELETE',
+    	success: function() {
+    		load_contacts();
+    	},
+    	complete: function() {
+    	console.log("I tried")
+    }
+    });
   });
 	// display_contacts();
 

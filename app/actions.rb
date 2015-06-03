@@ -35,12 +35,16 @@ delete '/photos/:id' do
 #duh
 end
 
-post 'contacts/:id/numbers/new' do
+post '/contacts/:id/numbers/new' do
 #add new number to contact
 end
 
-put 'contacts/:id/numbers/:number_id' do
+put '/contacts/:id/numbers/:number_id' do
 #not sure this works.
+end
+
+delete '/contacts/:id' do
+  Contact.find(params[:id]).destroy
 end
 
 
