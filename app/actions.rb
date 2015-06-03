@@ -5,9 +5,16 @@ get '/' do
   #search??
 end
 
+get '/contacts' do
+	content_type :json
+  Contact.all.to_json(:include => :numbers)
+end
+
 post '/contacts/new' do
 	#create new contact, add to list
-	#respond with list
+	contact = Contact.new(params)
+	contact.save
+
 end
 
 put '/contacts/:id' do

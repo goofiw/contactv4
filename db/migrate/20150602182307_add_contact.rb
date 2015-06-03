@@ -10,7 +10,7 @@ class AddContact < ActiveRecord::Migration
     create_table :numbers do |t|
     	t.string :number
     	t.string :type
-    	t.belongs_to :contacts, index: true
+    	t.belongs_to :contact, index: true
     end
   end
 end
