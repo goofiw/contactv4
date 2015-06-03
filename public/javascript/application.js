@@ -20,9 +20,8 @@ $(document).ready(function() {
 	    full_contact.append(add_num);
 	    div.append(full_contact);
 	  }
+	  $("#container").empty();
 	  $(div).appendTo("#container");
-
-	  $()
 	}
 
 	// display_contacts();
@@ -30,13 +29,14 @@ $(document).ready(function() {
 	$('#search').submit(function(event) {
 		console.log("searching");
     event.preventDefault();
-    var values = {};
+
+    var value = {};
     $.each($('#search').serializeArray(), function(i, field) {
-    	values[field.name] = field.value;
+    	value[field.name] = field.value;
     });
-    var result;
-    console.log(values);
-    load_contacts(values['search']);
+
+    console.log(value);
+    load_contacts(value);
 	});
 
 	$('#create').submit(function(event) {
@@ -50,21 +50,23 @@ $(document).ready(function() {
     	type: "POST",
     	url: 'contacts/new',
     	dataType: 'json',
-    	data: values,
-    	sucess: function() {
-    		display_contacts(load_contacts());
+    	data: JSON.stringify(values),
+    	complete: function(q) {  //Should be success, returning 200 but still not hitting
+    		console.log(q)
+    		console.log("YAY");
+    		load_contacts();
+    		$('#create')[0].reset();
     	}
     	});
 	});
 
 	var load_contacts = function(query) {
 		  $.getJSON('/contacts', query, function(data) {
-    	console.log("success");
+	  	console.log("loading")
+    	console.log("getting json for load contacts");
     	console.log(data);
     	display_contacts(data);
     });
 	}
-
-
   // See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
 });

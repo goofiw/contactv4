@@ -6,15 +6,25 @@ get '/' do
 end
 
 get '/contacts' do
+	query = params[:search]
 	content_type :json
-  Contact.all.to_json(:include => :numbers)
+	if(params[:search].blank?)
+	  contacts = Contact.all
+	else
+   contacts = Contact.where("first_name LIKE ?
+    								OR last_name LIKE ?
+    								OR email LIKE ?
+    								OR id LIKE ?", 
+    								"%#{query}%", "%#{query}%", "%#{query}%", "%#{query}%")
+	end
+	contacts.to_json(:include => :numbers)
 end
 
 post '/contacts/new' do
-	#create new contact, add to list
-	contact = Contact.new(params)
+	# data = JSON.parse(request.body.read)
+	puts data
+	contact = Contact.new(data)
 	contact.save
-
 end
 
 put '/contacts/:id' do
