@@ -7,14 +7,19 @@ $(document).ready(function() {
 	  var div = $('<div>')
 
 	  for(var i = 0; i < contacts.length; i++) {
-	    full_contact.append($('<p>').addClass("contact").text("Name:  " + contacts[i].first_name + " " + contacts[i].last_name + "\nEmail:  " + contacts[i].email));
+	    full_contact
+            .append($('<p>')
+            .addClass("contact")
+            .text("Name:  " + contacts[i].first_name + " " + 
+                contacts[i].last_name + "\nEmail:  " + contacts[i].email));
+
 	    for(var n = 0; n < contacts[i].numbers.length; n++){
-	    	num = $('<p>').text(contacts[i].numbers.type + ":  " + contacts[i].numbers[n] + '\n');
+	    	num = $('<p>').text(contacts[i].numbers['type'] + ":  " + contacts[i].numbers[n] + '\n');
 	    	full_contact.append(num);
 	    }
 	    del = $('<button>').addClass("delete").data('id', contacts[i].id).text("delete");    
-	    edit = $('<button>').addClass("edit").attr('data-id', contacts[i].id).text("edit");
-	    add_num = $('<button>').addClass("add-num").attr('data-id', contacts[i].id).text("add number");
+	    edit = $('<button>').addClass("edit").data('id', contacts[i].id).text("edit");
+	    add_num = $('<button>').addClass("add-num").data('id', contacts[i].id).text("add number");
 	    full_contact.append(del);
 	    full_contact.append(edit);
 	    full_contact.append(add_num);
