@@ -3,15 +3,27 @@ $(document).ready(function() {
   var display_contacts = function(contacts){
   	console.log(contacts);
 	  var info, num, del, edit, add_num, full_contact, create;
-	  var full_contact = $('<div>').addClass("full-contact");
 	  var div = $('<div>')
 
 	  for(var i = 0; i < contacts.length; i++) {
+        full_contact = $('<div>').addClass("full-contact");
 	    full_contact
             .append($('<p>')
             .addClass("contact")
-            .text("Name:  " + contacts[i].first_name + " " + 
-                contacts[i].last_name + "\nEmail:  " + contacts[i].email));
+            .text("Name:  "));
+        full_contact
+            .append($('<p>')
+            .addClass("update")
+            .addClass('name-field')
+            .text(contacts[i].first_name + " " + contacts[i].last_name));;
+        full_contact
+            .append($('<p>')
+            .text("Email:  "));
+        full_contact
+            .append($('<p>')
+            .addClass("update")
+            .addClass('email-field')
+            .text(contacts[i].email));
 
 	    for(var n = 0; n < contacts[i].numbers.length; n++){
 	    	num = $('<p>').text(contacts[i].numbers['type'] + ":  " + contacts[i].numbers[n] + '\n');
@@ -45,6 +57,53 @@ $(document).ready(function() {
     }
     });
   });
+
+$('#container').on('click', '.edit', function(e){
+    e.stopPropagation();
+    var $contact = $(this);
+    $contact.text('save');
+    $contact.addClass('save');
+    $contact.siblings('.update').attr("contenteditable", true).addClass('selected');
+    $('body').on('click', function() {
+        console.log("clicked my body");
+        $('.update').on('click', function(e) {
+          e.stopPropagation();
+        });
+    confirm("would you like to save changes?");
+    $contact.siblings('.update').removeAttr('contenteditable').removeClass('selected');
+    });
+});
+
+$('#container').on('click', '.save', function(e){
+    var $contact = $(this);
+    e.stopPropagation();
+    var id = $(this).data('id');
+    var full_name = $contact.siblings('.name-field').text().split(" ");
+    var email = $contact.siblings('.email-field').text();
+    var data =  { 'first_name': full_name[0], 'last_name': full_name[1], 'email': email}
+    //get changed data from fields, send_update_data, revert button back to edit
+    $contact.siblings('.update').removeAttr('contenteditable').removeClass('selected');
+    $(this).text('edit');
+    $(this).removeClass('save');
+    send_update_data(data, id)
+});
+
+var send_update_data = function(data, id) {
+    data = JSON.stringify(data);
+    $.ajax({
+        url: 'contacts/' + id,
+        type: 'PUT',
+        dataType: 'json',
+        data: data,
+        success: function() {
+            console.log("send_update_data success");
+            load_contacts();
+        },
+        complete: function() {
+        console.log("I tried")
+    }
+    });
+}
 	// display_contacts();
 
 	$('#search').submit(function(event) {

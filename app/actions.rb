@@ -21,14 +21,16 @@ get '/contacts' do
 end
 
 post '/contacts/new' do
-	# data = JSON.parse(request.body.read)
+	data = JSON.parse(request.body.read)
 	puts data
 	contact = Contact.new(data)
 	contact.save
 end
 
 put '/contacts/:id' do
-	#update a contact with provided json data
+	data = JSON.parse(request.body.read)
+	contact = Contact.find(params[:id]);
+	contact.update(data);
 end
 
 delete '/photos/:id' do
